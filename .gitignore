@@ -1,0 +1,29 @@
+# Eclipse
+.metadata/
+.recommenders/
+*.launch
+
+# Eclipse project settings
+.settings/
+.classpath
+.project
+
+# Java build output
+bin/
+target/
+out/
+
+# Compiled Java
+*.class
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE / editor
+.idea/
+.vscode/
+*.iml
