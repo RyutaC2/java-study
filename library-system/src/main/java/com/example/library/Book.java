@@ -7,11 +7,11 @@ public class Book {
 	private String author ;
 	private boolean borrowed;
 	
-	Book(int id, String title, String author, boolean borrowed) {
+	public Book(int id, String title, String author) {
 		this.id = id;
 		this.title = title;
 		this.author = author;
-		this.borrowed = borrowed;
+		this.borrowed = false; // 登録時は貸出可能状態で登録する
 	}
 	
 	// ＩＤ取得
@@ -30,7 +30,7 @@ public class Book {
 	}
 	
 	// 貸出状態取得
-	public boolean getBorrowed() {
+	public boolean isBorrowed() {
 		return this.borrowed;
 	}
 	

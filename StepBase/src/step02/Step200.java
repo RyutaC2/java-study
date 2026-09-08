@@ -34,6 +34,17 @@ public class Step200 {
 		Step203 s203 = new Step203();
 		int returnInt = s203.receiveInt();
 		System.out.println("Step203のreceiveIntメソッドからの戻り値: " + returnInt);
+		System.out.println("Step203のreceiveStringメソッドからの戻り値: " + s203.receiveString());
+		System.out.println("Step203のreturnCheckメソッドからの戻り値: " + s203.returnCheck());
+		
+		// 改行
+		System.out.println();
+		
+		// Step204クラスのインスタンス生成
+		Step204 s204 = new Step204();
+		s204 .sendInt(100);
+		s204.send2Int(10, 20);
+		s204.reverseBoolean(true); // 真: true　偽: false
 	}
 
 }
