@@ -20,6 +20,20 @@ public class Step200 {
 		
 		// Step201クラスのdispMessageメソッドを実行する
 		step201.dispMessage();
+		
+		// Step202クラスのインスタンス生成
+		Step202 step202 = new Step202();
+		
+		// Step202クラスのdispClassNameメソッドを実行する
+		step202.dispClassName();
+		
+		// 改行
+		System.out.println();
+		
+		// Step203クラスのインスタンス生成
+		Step203 s203 = new Step203();
+		int returnInt = s203.receiveInt();
+		System.out.println("Step203のreceiveIntメソッドからの戻り値: " + returnInt);
 	}
 
 }

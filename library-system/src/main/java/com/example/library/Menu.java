@@ -2,7 +2,7 @@ package com.example.library;
 
 import java.util.Scanner;
 
-public class menu {
+public class Menu {
 
 	private static final String MENU_TEXT = """
 			==== 図書館管理システム ====
@@ -17,13 +17,35 @@ public class menu {
 			""";
 	
 	public static void main(String[] args) {
-		System.out.print(MENU_TEXT);
 		
+		String input_value = "";
 		Scanner scanner = new Scanner(System.in);
-		String input_value = scanner.nextLine();
 		
-		System.out.println(input_value);
+		while (input_value != "0") {	
+			System.out.print(MENU_TEXT);
+			input_value = scanner.nextLine();
+			
+			switch (input_value) {
+				case "1":
+					break;
+				case "2":
+					break;
+				case "3":
+					break;
+				case "4":
+					break;
+				case "5":
+					break;
+				case "6":
+					break;
+				case "0":
+					break;
+				default:
+					System.out.println("この機能は未実装です");
+			}
+		}
+		
 		scanner.close();
 	}
-
+	
 }
