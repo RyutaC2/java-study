@@ -57,7 +57,30 @@ public class App {
 					
 				case "3":
 					select_info(input_value, "本を新たに登録します");
-					break;
+					
+					System.out.print("登録する本のタイトルを入力: ");
+					String input_title = scanner.nextLine();
+					if (input_title == "") {
+						System.out.println("タイトルなしでは登録できません。");
+						break;
+					}
+					
+					System.out.print("登録する本の著者名を入力: ");
+					String input_author = scanner.nextLine();
+					if (input_author == "") {
+						System.out.println("著者名なしでは登録できません。");
+						break;
+					}
+					
+					// 現在のリストのサイズで連番を採用
+					int next_num = book_list.size() + 1;
+					
+					// 本を新規登録
+					book_list.add(new Book(next_num, input_title, input_author));
+					
+					// 登録内容を確認出力（IDは1からの連番のため-1をする）
+					Book book = book_list.get(next_num - 1);
+					System.out.println("登録完了: " + book.toString());
 					
 				case "4":
 					select_info(input_value, "利用者を新たに登録します");
