@@ -10,6 +10,7 @@ public class App {
 	
 	// メニュー表示
 	private static final String MENU_TEXT = """
+			
 			┏━図書館管理システム━┓
 			┃1. 本の一覧を表示  　　┃
 			┃2. 本を検索  　　　　　┃
@@ -24,12 +25,20 @@ public class App {
 			番号を入力してください: """;
 	
 	private static ArrayList<Book> book_list = new ArrayList<>();
+	private static ArrayList<Member> member_list = new ArrayList<>();
 	
 	public static void main(String[] args) {
 		// 初期デモデータを追加
 		book_list.add(new Book(1, "これ一冊でjava入門!!", "金澤勇樹"));
 		book_list.add(new Book(2, "これ一冊でjava基礎!!", "金澤勇樹"));
 		book_list.add(new Book(3, "これ一冊でjava応用!!", "金澤勇樹"));
+		book_list.add(new Book(4, "基本情報技術者試験（FE）確定合格999%!?", "芽瑠頓"));
+		book_list.add(new Book(5, "応用情報技術者試験（AP）確定合格999%!?", "芽瑠頓"));
+		book_list.add(new Book(6, "人生完全攻略メソッド 絶対に勝率999999% 確定演出!?", "芽瑠頓"));
+		
+		member_list.add(new Member(1, "田中平蔵"));
+		member_list.add(new Member(2, "度遣反蒼"));
+		member_list.add(new Member(3, "宇宙海賊ゴー☆ジャス"));
 		
 		// 0が入力されるまでメニューを表示し続ける
 		while (!input_value.equals("0")) {	
@@ -38,23 +47,29 @@ public class App {
 			
 			// 入力に応じて処理を行う
 			switch (input_value) {
-				case "1" -> {
+				case "1" -> { // 本の一覧表示
 					n1_book_list();
 				}
-				case "2" -> {
+				case "2" -> { // 本の検索
 					n2_book_search();
 				}
-				case "3" -> {
+				case "3" -> { // 本の追加
 					n3_book_add();
 				}
-				case "4" -> {
-					select_info(input_value, "利用者を新たに登録します");
+				case "4" -> { // 利用者の一覧表示
+					n4_member_list();
 				}
-				case "5" -> {
-					select_info(input_value, "本を貸し出します");
+				case "5" -> { // 利用者の検索
+					n5_member_search();
 				}
-				case "6" -> {
-					select_info(input_value, "本を返却します");
+				case "6" -> { // 利用者の追加
+					n6_member_add();
+				}
+				case "7" -> { // 本の貸し出し
+					n7_book_lending();
+				}
+				case "8" -> { // 本の返却
+					n8_book_return();
 				}
 				case "0" -> {
 					select_info(input_value, "プログラムを終了します");
@@ -63,7 +78,9 @@ public class App {
 					select_info(input_value, "この機能は未実装です");
 				}
 			}
-			System.out.println();
+			
+			System.out.print("\n任意の入力で続行: ");
+			input_value = scanner.nextLine();
 		}
 		
 		scanner.close();
@@ -92,6 +109,7 @@ public class App {
 		
 		System.out.print("検索キーワードを入力: ");
 		String keyword = scanner.nextLine();
+		System.out.println();
 		
 		if (keyword.isBlank()) {
 			System.out.println("検索キーワードを入力してください。");
@@ -145,6 +163,90 @@ public class App {
 		// 登録内容を確認出力（IDは1からの連番のため-1をする）
 		Book book = book_list.get(next_num - 1);
 		System.out.println("登録完了: " + book.toString());
+	}
+	
+	// 4が選択された際、利用者の一覧を表示する処理
+	private static void n4_member_list() {
+		select_info(input_value, "利用者をの一覧を表示します");
+		
+		// 本の登録数が0の場合のメッセージ
+		if (member_list.isEmpty()) {
+			System.out.println("登録されている利用者はありません。");
+			return;
+		}
+		
+		// 利用者の情報を順番に出力する
+		for (Member member: member_list) {
+			System.out.println(member.toString());
+		}
+	}
+	
+	// 5が選択された際、利用者を検索する処理
+	private static void n5_member_search() {
+		select_info(input_value, "利用者を検索します");
+		System.out.print("利用者名または貸し出し中の本ＩＤを入力: ");
+		String keyword = scanner.nextLine();
+		System.out.println();
+		
+		if (keyword.isBlank()) {
+			System.out.println("利用者名または貸し出し中の本ＩＤを入力してください。");
+			return;
+		}
+		
+		int result_num = 0;
+		
+		for (Member member: member_list) {
+			if (member.getName().toLowerCase().contains(keyword.toLowerCase())) {
+				System.out.println("利用者名と合致: " + member.toString());
+				result_num++;
+			}
+			for (int i: member.getBorrowedBooks()) {
+				if (Integer.toString(i) == keyword) {
+					System.out.println("貸し出し中の本ＩＤと合致: ");
+					result_num++;
+				}
+			}
+		}
+		
+		if (result_num > 0) {
+			System.out.println("検索件数: " + result_num);
+		} else {
+			System.out.println("検索結果がありません。");
+		}
+	}
+	
+	// 6が選択された際、利用者を新たに追加する処理
+	private static void n6_member_add() {
+		select_info(input_value, "利用者を新たに登録します");
+		
+		System.out.print("登録する利用者の名前を入力: ");
+		String input_name = scanner.nextLine();
+		if (input_name.isBlank()) {
+			System.out.println("利用者名なしでは登録できません。");
+			return;
+		}
+		
+		// 現在のリストのサイズで連番を採用
+		int next_num = member_list.size() + 1;
+		
+		// 利用者を新規登録
+		member_list.add(new Member(next_num, input_name));
+		
+		// 登録内容を確認出力（IDは1からの連番のため-1をする）
+		Member member = member_list.get(next_num -1);
+		System.out.println("登録完了: " + member.toString());
+	}
+	
+	// 7が選択された際、本の貸し出しをする処理
+	private static void n7_book_lending() {
+		select_info(input_value, "本を貸し出します");
+		
+	}
+	
+	// 8が選択された際、本の返却をする処理
+	private static void n8_book_return() {
+		select_info(input_value, "本を返却します");
+		
 	}
 	
 	// 選択された内容を表示する
