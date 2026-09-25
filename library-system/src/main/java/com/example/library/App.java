@@ -241,6 +241,20 @@ public class App {
 	private static void n7_book_lending() {
 		select_info(input_value, "本を貸し出します");
 		
+		int target_member;
+		int target_book;
+		
+		System.out.print("利用者ＩＤを入力: ");
+		String input = scanner.nextLine();
+		
+		for (Member member: member_list) {
+			if (input == Integer.toString(member.getId())) {
+				target_member = Integer.parseInt(input);
+			}
+		}
+		
+		System.out.println("借りる本のＩＤを入力: ");
+		
 	}
 	
 	// 8が選択された際、本の返却をする処理
