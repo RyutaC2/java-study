@@ -119,7 +119,7 @@ public class App {
 		}
 		
 		int result_num = 0;
-		
+		// キーワードと合致する本のタイトル、著者名がないか照合
 		for (Book book: book_list) {
 			if (book.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
 				System.out.println("タイトルと合致: " + book.toString());
@@ -197,11 +197,13 @@ public class App {
 		
 		int result_num = 0;
 		
+		// キーワードと合致する利用者名がないか照合
 		for (Member member: member_list) {
 			if (member.getName().toLowerCase().contains(keyword.toLowerCase())) {
 				System.out.println("利用者名と合致: " + member.toString());
 				result_num++;
 			}
+			// 利用者ごとに、借りている本のIDとキーワードが合致するか照合
 			for (int i: member.getBorrowedBooks()) {
 				if (Integer.toString(i) .equals(keyword)) {
 					System.out.println("貸し出し中の本ＩＤと合致: ");
@@ -294,10 +296,12 @@ public class App {
 		System.out.println(target_book.toString());
 		System.out.print("\n上記の本を借りますか？(Yes / No): ");
 		input = scanner.nextLine();
+		// 入力の判定
 		if (input.equals("Yes") || input.equals("yes") || input.equals("Y") || input.equals("y")) {
-			target_book.setBorrowed(true);
-			target_member.addBorrowedBooks(target_book.getId());
+			target_book.setBorrowed(true); // 貸し出し中にステータスを変更
+			target_member.addBorrowedBooks(target_book.getId()); // 貸し出し中の本一覧に追加
 			
+			// 借りている本の一覧表示
 			System.out.println("\n本を借りました。現在借りている本の一覧: ");
 			for (int book_id: target_member.getBorrowedBooks()) {
 				System.out.println(book_list.get(book_id - 1).toString());

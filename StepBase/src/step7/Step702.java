@@ -29,4 +29,19 @@ public class Step702 {
 		// 数字に変換する
 		Integer.parseInt(input);
 	}
+	
+	/*
+	 * throwの練習
+	 */
+	public void method2() {
+		String name = "ハッピーめるちゃむ最高！踊ろうよ～いつものお顔で！ハッピーめるちゃむランクアップ！行きすぎよ～達コメすれば～頭がパラパラダイス～";
+		if (name.length() > 5) {
+			try {
+				// 例外を発生させる
+				throw(new Exception());
+			} catch (Exception e) {
+				System.out.println("はげた");
+			}
+		}
+	}
 }
