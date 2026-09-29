@@ -58,7 +58,7 @@ public class Step602 {
 			System.out.println("相手の手: " + hand[enemyHand]);
 			
 			// 今回の勝敗を計算する
-			result = playerHand - enemyHand;
+			result = (playerHand - enemyHand + 3) % 3;
 			// 勝敗を出力する
 			System.out.println(judge[result]);
 		}

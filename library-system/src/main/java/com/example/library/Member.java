@@ -1,15 +1,17 @@
 package com.example.library;
 
+import java.util.ArrayList;
+
 public class Member {
 	
 	private int id;
 	private String name;
-	private int[] borrowedBooks;
+	private ArrayList<Integer> borrowedBooks;
 	
 	public Member(int id, String name) {
 		this.id = id;
 		this.name = name;
-		this.borrowedBooks = new int[3];
+		this.borrowedBooks = new ArrayList<>();
 	}
 	
 	// ＩＤ取得
@@ -23,8 +25,13 @@ public class Member {
 	}
 	
 	// 貸し出し中の本ＩＤ一覧取得
-	public int[] getBorrowedBooks() {
+	public ArrayList<Integer> getBorrowedBooks() {
 		return this.borrowedBooks;
+	}
+	
+	// 借りた本を登録
+	public void addBorrowedBooks(int book_id) {
+		this.borrowedBooks.add(book_id);
 	}
 	
 	public String toString() {
@@ -39,8 +46,8 @@ public class Member {
 			}
 		}
 		
-		// 貸し出しがなく""のままの場合に「無し」を代入
-		if (strBor == "") {
+		// 貸し出しがなく中身のないままの場合に「無し」を代入
+		if (strBor.isEmpty()) {
 			strBor = "無し";
 		}
 		

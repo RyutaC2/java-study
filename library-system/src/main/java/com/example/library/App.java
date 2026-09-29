@@ -27,6 +27,8 @@ public class App {
 	private static ArrayList<Book> book_list = new ArrayList<>();
 	private static ArrayList<Member> member_list = new ArrayList<>();
 	
+	private static final int MAX_BOOKS = 3;
+	
 	public static void main(String[] args) {
 		// 初期デモデータを追加
 		book_list.add(new Book(1, "これ一冊でjava入門!!", "金澤勇樹"));
@@ -79,11 +81,11 @@ public class App {
 				}
 			}
 			
-			System.out.print("\n任意の入力で続行: ");
-			input_value = scanner.nextLine();
+			if (!input_value.equals("0")) {
+				System.out.print("\n任意の入力で続行: ");
+				input_value = scanner.nextLine();
+			}
 		}
-		
-		scanner.close();
 	}
 	
 	// 1が選択された際、本の一覧を表示する処理
@@ -154,8 +156,8 @@ public class App {
 			return;
 		}
 		
-		// 現在のリストのサイズで連番を採用
-		int next_num = book_list.size() + 1;
+		// 現在のリストの最大のID+1で連番を採用
+		int next_num = book_list.get(book_list.size()).getId() + 1;
 		
 		// 本を新規登録
 		book_list.add(new Book(next_num, input_title, input_author));
@@ -201,7 +203,7 @@ public class App {
 				result_num++;
 			}
 			for (int i: member.getBorrowedBooks()) {
-				if (Integer.toString(i) == keyword) {
+				if (Integer.toString(i) .equals(keyword)) {
 					System.out.println("貸し出し中の本ＩＤと合致: ");
 					result_num++;
 				}
@@ -226,8 +228,8 @@ public class App {
 			return;
 		}
 		
-		// 現在のリストのサイズで連番を採用
-		int next_num = member_list.size() + 1;
+		// 現在のリストの最大のID+1で連番を採用
+		int next_num = member_list.get(member_list.size()).getId() + 1;
 		
 		// 利用者を新規登録
 		member_list.add(new Member(next_num, input_name));
@@ -241,20 +243,69 @@ public class App {
 	private static void n7_book_lending() {
 		select_info(input_value, "本を貸し出します");
 		
-		int target_member;
-		int target_book;
+		Member target_member = null;
+		Book target_book = null;
+		String input;
 		
-		System.out.print("利用者ＩＤを入力: ");
-		String input = scanner.nextLine();
+		System.out.print("\n利用者ＩＤを入力: ");
+		input = scanner.nextLine();
 		
+		// 合致する利用者がいるか順番に照合
 		for (Member member: member_list) {
-			if (input == Integer.toString(member.getId())) {
-				target_member = Integer.parseInt(input);
+			if (input.equals(Integer.toString(member.getId()))) {
+				target_member = member;
+				System.out.println(target_member.toString());
 			}
 		}
+		// 合致せず0のままならエラー
+		if (target_member == null) {
+			System.out.println("\n利用者が見つかりません。");
+			return;
+		}
 		
-		System.out.println("借りる本のＩＤを入力: ");
+		System.out.print("\n借りる本のＩＤを入力: ");
+		input = scanner.nextLine();
 		
+		// 合致する本があるかいるか順番に照合
+		for (Book book: book_list) {
+			if (input.equals(Integer.toString(book.getId()))) {
+				target_book = book;
+			}
+		}
+		// 合致せずそのままならエラー
+		if (target_book == null) {
+			System.out.println("\n本が見つかりません。");
+			return;
+		}
+		
+		// 既に貸し出し中ならエラー
+		if (target_book.isBorrowed() == true) {
+			System.out.println("\nこの本は既に貸し出し中です。");
+			return;
+		}
+		
+		// 既に3冊以上借りていたらエラー
+		if (target_member.getBorrowedBooks().size() >= MAX_BOOKS) {
+			System.out.println("\n借りられる本の数は3冊までです。あなたは既に3冊の本を借りています。");
+			return;
+		}
+		
+		// 借りるかどうか確認してから処理を実行
+		System.out.println(target_book.toString());
+		System.out.print("\n上記の本を借りますか？(Yes / No): ");
+		input = scanner.nextLine();
+		if (input.equals("Yes") || input.equals("yes") || input.equals("Y") || input.equals("y")) {
+			target_book.setBorrowed(true);
+			target_member.addBorrowedBooks(target_book.getId());
+			
+			System.out.println("\n本を借りました。現在借りている本の一覧: ");
+			for (int book_id: target_member.getBorrowedBooks()) {
+				System.out.println(book_list.get(book_id - 1).toString());
+			}
+		} else {
+			System.out.println("\n操作をキャンセルしました。");
+			return;
+		}
 	}
 	
 	// 8が選択された際、本の返却をする処理
